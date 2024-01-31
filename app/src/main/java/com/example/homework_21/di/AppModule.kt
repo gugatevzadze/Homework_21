@@ -5,8 +5,10 @@ import androidx.room.Room
 import com.example.homework_21.BuildConfig
 import com.example.homework_21.data.local.dao.item.ItemDao
 import com.example.homework_21.data.local.database.AppDatabase
-import com.example.homework_21.data.remote.common.ResponseHandler
+import com.example.homework_21.data.common.ResponseHandler
 import com.example.homework_21.data.remote.service.item.ItemApiService
+import com.example.homework_21.data.util.NetworkConnectionChecker
+import com.example.homework_21.data.util.NetworkConnectionCheckerImpl
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -74,5 +76,13 @@ object AppModule {
     @Singleton
     fun provideItemDao(appDatabase: AppDatabase): ItemDao {
         return appDatabase.itemDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkConnectionManager(
+        @ApplicationContext context: Context
+    ): NetworkConnectionChecker {
+        return NetworkConnectionCheckerImpl(context)
     }
 }

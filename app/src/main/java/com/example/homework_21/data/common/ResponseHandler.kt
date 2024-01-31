@@ -1,4 +1,4 @@
-package com.example.homework_21.data.remote.common
+package com.example.homework_21.data.common
 
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response

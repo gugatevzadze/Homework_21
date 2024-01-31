@@ -26,7 +26,6 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflater<VB>)
         super.onViewCreated(view, savedInstanceState)
         //initialization of abstract methods
         setUp()
-        viewActionListeners()
         bindObservers()
     }
 
@@ -37,9 +36,6 @@ abstract class BaseFragment<VB : ViewBinding>(private val inflate: Inflater<VB>)
 
     //function for setup
     abstract fun setUp()
-
-    //function for registering on click listeners
-    abstract fun viewActionListeners()
 
     //function for observing changes
     abstract fun bindObservers()
