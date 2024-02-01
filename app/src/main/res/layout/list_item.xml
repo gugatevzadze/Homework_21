@@ -51,7 +51,7 @@
         android:layout_marginTop="12dp"
         android:fontFamily="@font/sfp_regular"
         android:text="@string/placeholder"
-        android:textColor="@color/item_name"
+        android:textColor="@color/light_gray"
         android:textSize="16sp" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -61,6 +61,6 @@
         android:layout_marginTop="6dp"
         android:fontFamily="@font/sfp_bold"
         android:text="@string/placeholder"
-        android:textColor="@color/item_name"
+        android:textColor="@color/light_gray"
         android:textSize="16sp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

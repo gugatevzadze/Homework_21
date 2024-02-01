@@ -4,5 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background_1">#1F2E35</color>
     <color name="background_2">#22343C</color>
-    <color name="item_name">#96A7AF</color>
+    <color name="light_gray">#96A7AF</color>
 </resources>

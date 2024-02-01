@@ -1,6 +1,6 @@
 package com.example.homework_21.di
 
-import com.example.homework_21.domain.repository.common.ItemsRepository
+import com.example.homework_21.domain.repository.item.ItemsRepository
 import com.example.homework_21.domain.usecase.GetItemsUseCase
 import dagger.Module
 import dagger.Provides

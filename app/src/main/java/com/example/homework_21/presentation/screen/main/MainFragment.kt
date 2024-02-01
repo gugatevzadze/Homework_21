@@ -24,6 +24,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     override fun setUp() {
         setUpRecyclerView()
+        setupListeners()
     }
 
     override fun bindObservers() {
@@ -37,6 +38,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
         viewModel.onEvent(MainEvents.GetItems)
     }
+    private fun setupListeners() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.onEvent(MainEvents.RefreshData)
+        }
+    }
+
     private fun observeMainState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -51,9 +58,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             listAdapter.submitList(it)
         }
         state.errorMessage?.let {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            binding.tvError.text = it
+            binding.tvError.isVisible = true
             viewModel.onEvent(MainEvents.UpdateErrorMessages)
         }
-        binding.progressBar.isVisible = state.isLoading
+        binding.swipeRefreshLayout.isRefreshing = state.isLoading
     }
 }

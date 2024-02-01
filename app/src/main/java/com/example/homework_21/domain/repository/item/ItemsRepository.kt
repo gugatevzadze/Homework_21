@@ -1,4 +1,4 @@
-package com.example.homework_21.domain.repository.common
+package com.example.homework_21.domain.repository.item
 
 import com.example.homework_21.data.common.Resource
 import com.example.homework_21.domain.model.item.Item

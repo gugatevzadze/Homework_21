@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class NetworkConnectionCheckerImpl @Inject constructor(
-@ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context
 ) : NetworkConnectionChecker {
 
     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

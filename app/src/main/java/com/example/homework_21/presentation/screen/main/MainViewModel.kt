@@ -27,6 +27,7 @@ class MainViewModel @Inject constructor(
         when (event) {
             is MainEvents.GetItems -> getItems()
             is MainEvents.UpdateErrorMessages -> updateErrorMessages(message = null)
+            is MainEvents.RefreshData -> refreshData()
         }
     }
 
@@ -61,5 +62,9 @@ class MainViewModel @Inject constructor(
                 errorMessage = message
             )
         }
+    }
+
+    private fun refreshData(){
+        getItems()
     }
 }
