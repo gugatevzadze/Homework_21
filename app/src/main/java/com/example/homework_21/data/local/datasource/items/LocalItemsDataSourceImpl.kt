@@ -15,14 +15,12 @@ import javax.inject.Inject
 class LocalItemsDataSourceImpl @Inject constructor(
     private val itemDao: ItemDao,
 ) : LocalItemsDataSource {
-    override suspend fun getItemsLocally(): Flow<Resource<List<Item>>> {
-        return itemDao.getItemsLocally().map { itemList ->
-            withContext(Dispatchers.Default) {
-                if (itemList.isEmpty()) {
-                    Resource.Error("Items not found, swipe to refresh")
-                } else {
-                    Resource.Success(itemList.map { it.toDomain() })
-                }
+    override suspend fun getItemsLocally(): Flow<Resource<List<Item>>> = withContext(Dispatchers.IO) {
+        itemDao.getItemsLocally().map { itemList ->
+            if (itemList.isEmpty()) {
+                Resource.Error("Items not found, swipe to refresh")
+            } else {
+                Resource.Success(itemList.map { it.toDomain() })
             }
         }
     }

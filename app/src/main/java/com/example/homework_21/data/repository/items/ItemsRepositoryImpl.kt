@@ -22,16 +22,14 @@ class ItemsRepositoryImpl @Inject constructor(
                     when (resource) {
                         is Resource.Success -> {
                             localItemsDataSource.insertItemsLocally(resource.data)
-                            emit(resource)
                         }
                         is Resource.Error -> emit(resource)
                         is Resource.Loading -> emit(resource)
                     }
                 }
-            } else {
-                localItemsDataSource.getItemsLocally().collect { resource ->
-                    emit(resource)
-                }
+            }
+            localItemsDataSource.getItemsLocally().collect { resource ->
+                emit(resource)
             }
         }
     }
