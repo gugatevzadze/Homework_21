@@ -8,4 +8,6 @@ interface LocalItemsDataSource {
     suspend fun getItemsLocally(): Flow<Resource<List<Item>>>
 
     suspend fun insertItemsLocally(items: List<Item>)
+
+    suspend fun getItemsByCategory(category: String): Flow<Resource<List<Item>>>
 }

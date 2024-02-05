@@ -5,4 +5,7 @@ sealed class MainEvents {
     data object UpdateErrorMessages : MainEvents()
 
     data object RefreshData : MainEvents()
+
+    data object GetCategories : MainEvents()
+    data class GetItemsByCategory(val category: String) : MainEvents()
 }

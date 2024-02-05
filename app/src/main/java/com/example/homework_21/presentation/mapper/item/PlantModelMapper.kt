@@ -9,6 +9,7 @@ fun Item.toPresentation(): ItemModel{
         cover = cover,
         price = price,
         title = title,
-        favorite = favorite
+        favorite = favorite,
+        category = category
     )
 }

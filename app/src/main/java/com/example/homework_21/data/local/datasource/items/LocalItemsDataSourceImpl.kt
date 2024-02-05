@@ -1,5 +1,6 @@
 package com.example.homework_21.data.local.datasource.items
 
+import android.util.Log.d
 import com.example.homework_21.data.common.Resource
 import com.example.homework_21.data.local.dao.item.ItemDao
 import com.example.homework_21.data.local.mapper.item.toData
@@ -27,6 +28,26 @@ class LocalItemsDataSourceImpl @Inject constructor(
     override suspend fun insertItemsLocally(items: List<Item>) {
         withContext(Dispatchers.IO) {
             itemDao.insertItemsLocally(items.map { it.toData() })
+        }
+    }
+
+    override suspend fun getItemsByCategory(category: String): Flow<Resource<List<Item>>> = withContext(Dispatchers.IO) {
+        if (category == "All") {
+            itemDao.getItemsLocally().map { itemList ->
+                if (itemList.isEmpty()) {
+                    Resource.Error("Items not found, swipe to refresh")
+                } else {
+                    Resource.Success(itemList.map { it.toDomain() })
+                }
+            }
+        } else {
+            itemDao.getItemsByCategory(category).map { itemList ->
+                if (itemList.isEmpty()) {
+                    Resource.Error("No items found in this category")
+                } else {
+                    Resource.Success(itemList.map { it.toDomain() })
+                }
+            }
         }
     }
 }

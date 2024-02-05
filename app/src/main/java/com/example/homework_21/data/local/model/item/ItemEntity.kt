@@ -16,4 +16,6 @@ data class ItemEntity (
     val title:String,
     @ColumnInfo(name="favorite")
     val favorite:Boolean,
+    @ColumnInfo(name="category")
+    val category: String
 )

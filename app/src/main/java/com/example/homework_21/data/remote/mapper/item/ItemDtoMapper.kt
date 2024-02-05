@@ -10,5 +10,6 @@ fun ItemDto.toDomain(): Item {
         price = price,
         title = title,
         favorite = favorite,
+        category = category
     )
 }

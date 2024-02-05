@@ -6,9 +6,10 @@ import com.example.homework_21.BuildConfig
 import com.example.homework_21.data.local.dao.item.ItemDao
 import com.example.homework_21.data.local.database.AppDatabase
 import com.example.homework_21.data.common.ResponseHandler
+import com.example.homework_21.data.local.database.MIGRATION_1_2
 import com.example.homework_21.data.remote.service.item.ItemApiService
-import com.example.homework_21.data.util.NetworkConnectionChecker
-import com.example.homework_21.data.util.NetworkConnectionCheckerImpl
+import com.example.homework_21.domain.util.NetworkConnectionChecker
+import com.example.homework_21.domain.util.NetworkConnectionCheckerImpl
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -69,7 +70,7 @@ object AppModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java, "item-database"
-        ).build()
+        ).addMigrations(MIGRATION_1_2).build()
     }
 
     @Provides

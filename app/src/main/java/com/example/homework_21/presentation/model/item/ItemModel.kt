@@ -6,4 +6,5 @@ data class ItemModel(
     val price:String,
     val title:String,
     val favorite:Boolean,
+    val category: String
 )

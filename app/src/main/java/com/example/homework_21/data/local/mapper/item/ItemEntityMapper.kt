@@ -10,6 +10,7 @@ fun ItemEntity.toDomain(): Item {
         price = price,
         title = title,
         favorite = favorite,
+        category = category
     )
 }
 
@@ -20,5 +21,6 @@ fun Item.toData(): ItemEntity {
         price = price,
         title = title,
         favorite = favorite,
+        category = category
     )
 }

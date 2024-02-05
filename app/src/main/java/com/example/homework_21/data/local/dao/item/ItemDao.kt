@@ -14,4 +14,7 @@ interface ItemDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertItemsLocally(items: List<ItemEntity>)
+
+    @Query("SELECT * FROM itemEntity WHERE category = :category")
+    fun getItemsByCategory(category: String): Flow<List<ItemEntity>>
 }
