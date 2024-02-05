@@ -1,7 +1,5 @@
 package com.example.homework_21.presentation.screen.main
 
-import android.util.Log
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -72,10 +70,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     private fun handleMainState(state: MainState) {
         state.items?.let {
             listAdapter.submitList(it)
+            binding.swipeRefreshLayout.isEnabled = false
         }
         state.errorMessage?.let {
             binding.tvError.text = it
             binding.tvError.isVisible = true
+            binding.swipeRefreshLayout.isEnabled = true
             viewModel.onEvent(MainEvents.UpdateErrorMessages)
         }
         binding.swipeRefreshLayout.isRefreshing = state.isLoading

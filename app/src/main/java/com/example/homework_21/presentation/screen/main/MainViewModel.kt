@@ -1,6 +1,5 @@
 package com.example.homework_21.presentation.screen.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homework_21.data.common.Resource
@@ -10,6 +9,7 @@ import com.example.homework_21.presentation.event.MainEvents
 import com.example.homework_21.presentation.mapper.item.toPresentation
 import com.example.homework_21.presentation.state.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.update
@@ -37,25 +37,9 @@ class MainViewModel @Inject constructor(
 
     private fun getItems() {
         viewModelScope.launch {
-            getItemsUseCase.invoke().collect { it ->
-                when(it){
-                    is Resource.Success -> {
-                        _mainState.update { currentState ->
-                            currentState.copy(
-                                items = it.data.map { it.toPresentation() }
-                            )
-                        }
-                    }
-                    is Resource.Error -> {
-                        updateErrorMessages(it.errorMessage)
-                    }
-                    is Resource.Loading -> {
-                        _mainState.update { currentState ->
-                            currentState.copy(
-                                isLoading = it.loading
-                            )
-                        }
-                    }
+            handleResource(getItemsUseCase.invoke()) { data ->
+                _mainState.update { currentState ->
+                    currentState.copy(items = data.map { it.toPresentation() })
                 }
             }
         }
@@ -63,26 +47,10 @@ class MainViewModel @Inject constructor(
 
     private fun getCategories() {
         viewModelScope.launch {
-            getItemsUseCase.invoke().collect { it ->
-                when(it){
-                    is Resource.Success -> {
-                        val categories = it.data.map { it.category }.distinct()
-                        _mainState.update { currentState ->
-                            currentState.copy(
-                                categories = categories
-                            )
-                        }
-                    }
-                    is Resource.Error -> {
-                        updateErrorMessages(it.errorMessage)
-                    }
-                    is Resource.Loading -> {
-                        _mainState.update { currentState ->
-                            currentState.copy(
-                                isLoading = it.loading
-                            )
-                        }
-                    }
+            handleResource(getItemsUseCase.invoke()) { data ->
+                val categories = data.map { it.category }.distinct()
+                _mainState.update { currentState ->
+                    currentState.copy(categories = categories)
                 }
             }
         }
@@ -90,25 +58,9 @@ class MainViewModel @Inject constructor(
 
     private fun getItemsByCategory(category: String) {
         viewModelScope.launch {
-            getItemsByCategoryUseCase.invoke(category).collect { it ->
-                when(it){
-                    is Resource.Success -> {
-                        _mainState.update { currentState ->
-                            currentState.copy(
-                                items = it.data.map { it.toPresentation() }
-                            )
-                        }
-                    }
-                    is Resource.Error -> {
-                        updateErrorMessages(it.errorMessage)
-                    }
-                    is Resource.Loading -> {
-                        _mainState.update { currentState ->
-                            currentState.copy(
-                                isLoading = it.loading
-                            )
-                        }
-                    }
+            handleResource(getItemsByCategoryUseCase.invoke(category)) { data ->
+                _mainState.update { currentState ->
+                    currentState.copy(items = data.map { it.toPresentation() })
                 }
             }
         }
@@ -124,5 +76,18 @@ class MainViewModel @Inject constructor(
 
     private fun refreshData(){
         getItems()
+    }
+    private fun <T> handleResource(resourceFlow: Flow<Resource<T>>, handleSuccess: (T) -> Unit) {
+        viewModelScope.launch {
+            resourceFlow.collect { resource ->
+                when (resource) {
+                    is Resource.Success -> handleSuccess(resource.data)
+                    is Resource.Error -> updateErrorMessages(resource.errorMessage)
+                    is Resource.Loading -> _mainState.update { currentState ->
+                        currentState.copy(isLoading = resource.loading)
+                    }
+                }
+            }
+        }
     }
 }
